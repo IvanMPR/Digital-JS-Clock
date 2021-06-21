@@ -87,7 +87,11 @@ const renderTimeAndDate = function () {
       suffixSpanElement.style.visibility = 'visible';
       suffixSpanElement.textContent = hours < 12 ? 'a.m.' : 'p.m.';
       hoursSpanElement.textContent =
-        hours < 13 ? String(hours) : String(hours - 12);
+        hours === 00 || hours === 12
+          ? 12
+          : hours < 12
+          ? String(hours)
+          : String(hours - 12);
     } else {
       suffixSpanElement.style.visibility = 'hidden';
     }
