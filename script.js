@@ -9,6 +9,8 @@ const toggleTimeModeButton = document.querySelector('.btn');
 // ---------------- || --------------------- //
 let isTwelveHourClockActive = false;
 // ---------------- || --------------------- //
+setInterval(renderTimeAndDate, 1000);
+// ---------------- || --------------------- //
 const parseMonthName = function (num) {
   return num === 0
     ? 'January'
@@ -61,53 +63,50 @@ const ordinalNumberSuffix = function (date) {
     : 'th';
 };
 
-const renderTimeAndDate = function () {
-  setInterval(() => {
-    const now = new Date();
-    // ---------------- || --------------------- //
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
-    // ---------------- || --------------------- //
-    const dayOfWeek = now.getDay();
-    const date = now.getDate();
-    const month = now.getMonth();
-    const year = now.getFullYear();
-    // ---------------- || --------------------- //
-    // I chose to render time with span elements because of indentation.
-    // With p `${...}` entire paragraph moved when any of the hours, minutes or seconds === 11
-    // Thats why spans have inline-block display and fixed widths, to prevent indentation
-    // ---------------- || --------------------- //
-    hoursSpanElement.textContent = String(hours).padStart(2, 0);
-    minutesSpanElement.textContent = String(minutes).padStart(2, 0);
-    secondsSpanElement.textContent = String(seconds).padStart(2, 0);
-    // ---------------- || --------------------- //
+function renderTimeAndDate() {
+  const now = new Date();
+  // ---------------- || --------------------- //
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  // ---------------- || --------------------- //
+  const dayOfWeek = now.getDay();
+  const date = now.getDate();
+  const month = now.getMonth();
+  const year = now.getFullYear();
+  // ---------------- || --------------------- //
+  // I chose to render time with span elements because of indentation.
+  // With p `${...}` entire paragraph moved when any of the hours, minutes or seconds === 11
+  // Thats why spans have inline-block display and fixed widths, to prevent indentation
+  // ---------------- || --------------------- //
+  hoursSpanElement.textContent = String(hours).padStart(2, 0);
+  minutesSpanElement.textContent = String(minutes).padStart(2, 0);
+  secondsSpanElement.textContent = String(seconds).padStart(2, 0);
+  // ---------------- || --------------------- //
 
-    if (isTwelveHourClockActive) {
-      suffixSpanElement.style.visibility = 'visible';
-      suffixSpanElement.textContent = hours < 12 ? 'a.m.' : 'p.m.';
-      hoursSpanElement.textContent =
-        hours === 00 || hours === 12
-          ? 12
-          : hours < 12
-          ? String(hours)
-          : String(hours - 12);
-    } else {
-      suffixSpanElement.style.visibility = 'hidden';
-    }
-    // ---------------- || --------------------- //
+  if (isTwelveHourClockActive) {
+    suffixSpanElement.style.visibility = 'visible';
+    suffixSpanElement.textContent = hours < 12 ? 'a.m.' : 'p.m.';
+    hoursSpanElement.textContent =
+      hours === 00 || hours === 12
+        ? 12
+        : hours < 12
+        ? String(hours)
+        : String(hours - 12);
+  } else {
+    suffixSpanElement.style.visibility = 'hidden';
+  }
+  // ---------------- || --------------------- //
 
-    dateStringParagraph.textContent = `${parseDayName(
-      dayOfWeek
-    )}, ${date}${ordinalNumberSuffix(date)} of ${parseMonthName(
-      month
-    )}, ${year}`;
-  }, 1000);
-};
-renderTimeAndDate();
+  dateStringParagraph.textContent = `${parseDayName(
+    dayOfWeek
+  )}, ${date}${ordinalNumberSuffix(date)} of ${parseMonthName(month)}, ${year}`;
+}
 
 toggleTimeModeButton.addEventListener('click', function () {
   !isTwelveHourClockActive
     ? (isTwelveHourClockActive = true)
     : (isTwelveHourClockActive = false);
 });
+
+renderTimeAndDate();
