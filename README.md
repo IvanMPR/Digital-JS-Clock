@@ -1,4 +1,4 @@
-# Digital JavaScript Clock
+# JavaScript Digital Clock
 <br>
 <img src="img/screenshot.jpg" width="100%">
 <br>
